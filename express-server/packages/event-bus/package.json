@@ -1,0 +1,22 @@
+{
+  "name": "@devdocs/event-bus",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@devdocs/shared-types": "*",
+    "@devdocs/shared-config": "*",
+    "amqplib": "^0.10.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.4",
+    "@types/uuid": "^9.0.8",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.4.0"
+  }
+}
