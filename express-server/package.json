@@ -1,0 +1,40 @@
+{
+  "name": "devdocs-studio-backend",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "dev:gateway": "npm run dev -w @devdocs/api-gateway",
+    "dev:auth": "npm run dev -w @devdocs/auth-service",
+    "dev:user": "npm run dev -w @devdocs/user-service",
+    "dev:project": "npm run dev -w @devdocs/project-service",
+    "dev:document": "npm run dev -w @devdocs/document-service",
+    "dev:template": "npm run dev -w @devdocs/template-service",
+    "dev:ai": "npm run dev -w @devdocs/ai-service",
+    "dev:export": "npm run dev -w @devdocs/export-service",
+    "dev:file": "npm run dev -w @devdocs/file-service",
+    "dev:notification": "npm run dev -w @devdocs/notification-service",
+    "dev:audit": "npm run dev -w @devdocs/audit-service",
+    "dev:analytics": "npm run dev -w @devdocs/analytics-service",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  }
+}
