@@ -1,0 +1,739 @@
+{
+  "_comment": "DevDocs Studio — RabbitMQ topology definitions. Loaded by management.load_definitions on first boot.",
+
+  "rabbit_version": "3.13.0",
+  "rabbitmq_version": "3.13.0",
+  "product_name": "RabbitMQ",
+
+  "vhosts": [
+    { "name": "/" }
+  ],
+
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "guest",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"]
+    }
+  ],
+
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+
+  "exchanges": [
+    {
+      "name": "devdocs.auth",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.users",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.projects",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.documents",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.ai",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.exports",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.notifications",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.audit",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.analytics",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "devdocs.dead-letter",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+
+  "queues": [
+    {
+      "_comment": "── auth-service queues ─────────────────────────────────────────────────────",
+      "name": "auth.user-registered",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "auth.user-registered.dlq",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name": "auth.password-reset-requested",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "auth.password-reset-requested.dlq",
+        "x-message-ttl": 3600000
+      }
+    },
+    {
+      "name": "auth.user-login",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "auth.user-login.dlq"
+      }
+    },
+
+    {
+      "_comment": "── user-service queues ─────────────────────────────────────────────────────",
+      "name": "users.profile-updated",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "users.profile-updated.dlq"
+      }
+    },
+    {
+      "name": "users.auth-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "users.auth-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── project-service queues ──────────────────────────────────────────────────",
+      "name": "projects.created",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "projects.created.dlq"
+      }
+    },
+    {
+      "name": "projects.member-added",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "projects.member-added.dlq"
+      }
+    },
+    {
+      "name": "projects.deleted",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "projects.deleted.dlq"
+      }
+    },
+
+    {
+      "_comment": "── document-service queues ─────────────────────────────────────────────────",
+      "name": "documents.created",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "documents.created.dlq"
+      }
+    },
+    {
+      "name": "documents.updated",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "documents.updated.dlq"
+      }
+    },
+    {
+      "name": "documents.deleted",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "documents.deleted.dlq"
+      }
+    },
+    {
+      "name": "documents.published",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "documents.published.dlq"
+      }
+    },
+
+    {
+      "_comment": "── ai-service queues ───────────────────────────────────────────────────────",
+      "name": "ai.generation-requested",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "ai.generation-requested.dlq",
+        "x-max-priority": 5
+      }
+    },
+    {
+      "name": "ai.document-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "ai.document-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── export-service queues ───────────────────────────────────────────────────",
+      "name": "exports.export-requested",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "exports.export-requested.dlq",
+        "x-max-priority": 3
+      }
+    },
+    {
+      "name": "exports.document-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "exports.document-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── notification-service queues ─────────────────────────────────────────────",
+      "name": "notifications.send",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "notifications.send.dlq",
+        "x-max-priority": 5,
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name": "notifications.auth-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "notifications.auth-events.dlq"
+      }
+    },
+    {
+      "name": "notifications.project-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "notifications.project-events.dlq"
+      }
+    },
+    {
+      "name": "notifications.document-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "notifications.document-events.dlq"
+      }
+    },
+    {
+      "name": "notifications.export-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "notifications.export-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── audit-service queues ────────────────────────────────────────────────────",
+      "name": "audit.auth-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "audit.auth-events.dlq"
+      }
+    },
+    {
+      "name": "audit.user-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "audit.user-events.dlq"
+      }
+    },
+    {
+      "name": "audit.project-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "audit.project-events.dlq"
+      }
+    },
+    {
+      "name": "audit.document-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "audit.document-events.dlq"
+      }
+    },
+    {
+      "name": "audit.file-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "audit.file-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── analytics-service queues ────────────────────────────────────────────────",
+      "name": "analytics.page-view",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "analytics.page-view.dlq"
+      }
+    },
+    {
+      "name": "analytics.user-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "analytics.user-events.dlq"
+      }
+    },
+    {
+      "name": "analytics.document-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "analytics.document-events.dlq"
+      }
+    },
+    {
+      "name": "analytics.project-events",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "devdocs.dead-letter",
+        "x-dead-letter-routing-key": "analytics.project-events.dlq"
+      }
+    },
+
+    {
+      "_comment": "── Dead-letter queues (catch-all for failed messages) ───────────────────────",
+      "name": "devdocs.dlq",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 604800000
+      }
+    }
+  ],
+
+  "bindings": [
+    {
+      "_comment": "── devdocs.auth → service queues ───────────────────────────────────────────",
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "auth.user-registered",
+      "destination_type": "queue",
+      "routing_key": "auth.user.registered",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "auth.password-reset-requested",
+      "destination_type": "queue",
+      "routing_key": "auth.password.reset.requested",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "auth.user-login",
+      "destination_type": "queue",
+      "routing_key": "auth.user.login",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.auth → downstream consumers ─────────────────────────────────────",
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "users.auth-events",
+      "destination_type": "queue",
+      "routing_key": "auth.user.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "notifications.auth-events",
+      "destination_type": "queue",
+      "routing_key": "auth.user.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.auth",
+      "vhost": "/",
+      "destination": "audit.auth-events",
+      "destination_type": "queue",
+      "routing_key": "auth.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.users → downstream consumers ────────────────────────────────────",
+      "source": "devdocs.users",
+      "vhost": "/",
+      "destination": "users.profile-updated",
+      "destination_type": "queue",
+      "routing_key": "users.profile.updated",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.users",
+      "vhost": "/",
+      "destination": "audit.user-events",
+      "destination_type": "queue",
+      "routing_key": "users.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.users",
+      "vhost": "/",
+      "destination": "analytics.user-events",
+      "destination_type": "queue",
+      "routing_key": "users.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.projects → service queue + downstream ───────────────────────────",
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "projects.created",
+      "destination_type": "queue",
+      "routing_key": "projects.created",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "projects.member-added",
+      "destination_type": "queue",
+      "routing_key": "projects.member.added",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "projects.deleted",
+      "destination_type": "queue",
+      "routing_key": "projects.deleted",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "notifications.project-events",
+      "destination_type": "queue",
+      "routing_key": "projects.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "audit.project-events",
+      "destination_type": "queue",
+      "routing_key": "projects.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.projects",
+      "vhost": "/",
+      "destination": "analytics.project-events",
+      "destination_type": "queue",
+      "routing_key": "projects.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.documents → service queues + downstream ─────────────────────────",
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "documents.created",
+      "destination_type": "queue",
+      "routing_key": "documents.created",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "documents.updated",
+      "destination_type": "queue",
+      "routing_key": "documents.updated",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "documents.deleted",
+      "destination_type": "queue",
+      "routing_key": "documents.deleted",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "documents.published",
+      "destination_type": "queue",
+      "routing_key": "documents.published",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "ai.document-events",
+      "destination_type": "queue",
+      "routing_key": "documents.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "exports.document-events",
+      "destination_type": "queue",
+      "routing_key": "documents.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "notifications.document-events",
+      "destination_type": "queue",
+      "routing_key": "documents.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "audit.document-events",
+      "destination_type": "queue",
+      "routing_key": "documents.#",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.documents",
+      "vhost": "/",
+      "destination": "analytics.document-events",
+      "destination_type": "queue",
+      "routing_key": "documents.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.ai → service queue ───────────────────────────────────────────────",
+      "source": "devdocs.ai",
+      "vhost": "/",
+      "destination": "ai.generation-requested",
+      "destination_type": "queue",
+      "routing_key": "ai.generation.requested",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.exports → service queue + downstream ────────────────────────────",
+      "source": "devdocs.exports",
+      "vhost": "/",
+      "destination": "exports.export-requested",
+      "destination_type": "queue",
+      "routing_key": "exports.requested",
+      "arguments": {}
+    },
+    {
+      "source": "devdocs.exports",
+      "vhost": "/",
+      "destination": "notifications.export-events",
+      "destination_type": "queue",
+      "routing_key": "exports.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.notifications → service queue ───────────────────────────────────",
+      "source": "devdocs.notifications",
+      "vhost": "/",
+      "destination": "notifications.send",
+      "destination_type": "queue",
+      "routing_key": "notifications.send",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── devdocs.file-service → audit ────────────────────────────────────────────",
+      "source": "devdocs.notifications",
+      "vhost": "/",
+      "destination": "audit.file-events",
+      "destination_type": "queue",
+      "routing_key": "files.#",
+      "arguments": {}
+    },
+
+    {
+      "_comment": "── Dead-letter catch-all binding ───────────────────────────────────────────",
+      "source": "devdocs.dead-letter",
+      "vhost": "/",
+      "destination": "devdocs.dlq",
+      "destination_type": "queue",
+      "routing_key": "#",
+      "arguments": {}
+    }
+  ],
+
+  "policies": [
+    {
+      "vhost": "/",
+      "name": "ha-all",
+      "pattern": "^devdocs\\.",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0,
+      "apply-to": "queues"
+    }
+  ],
+
+  "global_parameters": [],
+  "parameters": []
+}
