@@ -1,0 +1,196 @@
+version: '3.9'
+
+# Development overrides — use with:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+
+  # ─── Infrastructure (dev tweaks) ───────────────────────────────────────────
+
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: devdocs
+
+  mongodb:
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  mysql:
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: devdocs
+
+  rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    command: redis-server --requirepass password
+
+  # ─── api-gateway ───────────────────────────────────────────────────────────
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=dev_jwt_secret_not_for_production
+    volumes:
+      - ./services/api-gateway/src:/app/services/api-gateway/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/api-gateway/src/index.ts
+
+  # ─── auth-service ──────────────────────────────────────────────────────────
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=dev_jwt_secret_not_for_production
+    volumes:
+      - ./services/auth-service/src:/app/services/auth-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/auth-service/src/index.ts
+
+  # ─── user-service ──────────────────────────────────────────────────────────
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/user-service/src:/app/services/user-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/user-service/src/index.ts
+
+  # ─── project-service ───────────────────────────────────────────────────────
+
+  project-service:
+    build:
+      context: .
+      dockerfile: services/project-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/project-service/src:/app/services/project-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/project-service/src/index.ts
+
+  # ─── document-service ──────────────────────────────────────────────────────
+
+  document-service:
+    build:
+      context: .
+      dockerfile: services/document-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/document-service/src:/app/services/document-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/document-service/src/index.ts
+
+  # ─── template-service ──────────────────────────────────────────────────────
+
+  template-service:
+    build:
+      context: .
+      dockerfile: services/template-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/template-service/src:/app/services/template-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/template-service/src/index.ts
+
+  # ─── ai-service ────────────────────────────────────────────────────────────
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: services/ai-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/ai-service/src:/app/services/ai-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/ai-service/src/index.ts
+
+  # ─── export-service ────────────────────────────────────────────────────────
+
+  export-service:
+    build:
+      context: .
+      dockerfile: services/export-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/export-service/src:/app/services/export-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/export-service/src/index.ts
+
+  # ─── file-service ──────────────────────────────────────────────────────────
+
+  file-service:
+    build:
+      context: .
+      dockerfile: services/file-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/file-service/src:/app/services/file-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/file-service/src/index.ts
+
+  # ─── notification-service ──────────────────────────────────────────────────
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/notification-service/src:/app/services/notification-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/notification-service/src/index.ts
+
+  # ─── audit-service ─────────────────────────────────────────────────────────
+
+  audit-service:
+    build:
+      context: .
+      dockerfile: services/audit-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/audit-service/src:/app/services/audit-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/audit-service/src/index.ts
+
+  # ─── analytics-service ─────────────────────────────────────────────────────
+
+  analytics-service:
+    build:
+      context: .
+      dockerfile: services/analytics-service/Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./services/analytics-service/src:/app/services/analytics-service/src
+      - ./packages:/app/packages
+    command: npx ts-node-dev --respawn --transpile-only services/analytics-service/src/index.ts
