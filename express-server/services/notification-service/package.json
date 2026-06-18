@@ -1,0 +1,74 @@
+{
+  "name": "@devdocs/notification-service",
+  "version": "1.0.0",
+  "description": "Notification service for DevDocs Studio — email, in-app, and push notifications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest --runInBand --forceExit --passWithNoTests",
+    "test:unit": "jest --testPathPattern=tests/unit --runInBand",
+    "test:integration": "jest --testPathPattern=tests/integration --runInBand",
+    "test:coverage": "jest --coverage --runInBand --forceExit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "clean": "rm -rf dist",
+    "migrate": "ts-node src/database/migrate.ts"
+  },
+  "dependencies": {
+    "@devdocs/event-bus": "*",
+    "@devdocs/shared-middleware": "*",
+    "@devdocs/shared-types": "*",
+    "@devdocs/shared-utils": "*",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "http-status-codes": "^2.3.0",
+    "knex": "^3.1.0",
+    "mysql2": "^3.10.1",
+    "nodemailer": "^6.9.14",
+    "uuid": "^10.0.0",
+    "winston": "^3.13.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^6.4.15",
+    "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.5",
+    "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.4.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": ["<rootDir>/src"],
+    "moduleNameMapper": {
+      "@devdocs/shared-types": "<rootDir>/../../packages/shared-types/src",
+      "@devdocs/shared-utils": "<rootDir>/../../packages/shared-utils/src",
+      "@devdocs/shared-middleware": "<rootDir>/../../packages/shared-middleware/src",
+      "@devdocs/event-bus": "<rootDir>/../../packages/event-bus/src"
+    },
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/index.ts",
+      "!src/tests/**",
+      "!src/**/*.d.ts"
+    ]
+  }
+}
