@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  DELETED
+}
+
+enum ProjectVisibility {
+  PRIVATE
+  INTERNAL
+  PUBLIC
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+model Project {
+  id             String            @id @default(uuid())
+  name           String
+  slug           String            @unique
+  description    String?
+  status         ProjectStatus     @default(ACTIVE)
+  visibility     ProjectVisibility @default(PRIVATE)
+  organizationId String?
+  ownerId        String
+  coverImage     String?
+  tags           ProjectTag[]
+  members        ProjectMember[]
+  settings       ProjectSettings?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  deletedAt      DateTime?
+
+  @@index([ownerId])
+  @@index([organizationId])
+  @@index([slug])
+}
+
+model ProjectMember {
+  id        String     @id @default(uuid())
+  projectId String
+  userId    String
+  role      MemberRole @default(VIEWER)
+  project   Project    @relation(fields: [projectId], references: [id])
+  joinedAt  DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+}
+
+model ProjectTag {
+  id        String   @id @default(uuid())
+  name      String
+  color     String   @default("#6366f1")
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, name])
+}
+
+model ProjectSettings {
+  id                    String   @id @default(uuid())
+  projectId             String   @unique
+  project               Project  @relation(fields: [projectId], references: [id])
+  defaultDocumentStatus String   @default("DRAFT")
+  allowPublicComments   Boolean  @default(false)
+  enableVersioning      Boolean  @default(true)
+  autoSaveInterval      Int      @default(30)
+  updatedAt             DateTime @updatedAt
+}
+
+model ProjectInvitation {
+  id         String     @id @default(uuid())
+  projectId  String
+  email      String
+  role       MemberRole @default(VIEWER)
+  token      String     @unique
+  invitedBy  String
+  expiresAt  DateTime
+  acceptedAt DateTime?
+  createdAt  DateTime   @default(now())
+
+  @@index([token])
+  @@index([email])
+}
