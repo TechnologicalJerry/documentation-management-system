@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS notification_preferences (
+  id VARCHAR(36) PRIMARY KEY,
+  user_id VARCHAR(36) NOT NULL UNIQUE,
+  email_enabled BOOLEAN DEFAULT TRUE,
+  in_app_enabled BOOLEAN DEFAULT TRUE,
+  document_updates BOOLEAN DEFAULT TRUE,
+  project_updates BOOLEAN DEFAULT TRUE,
+  team_updates BOOLEAN DEFAULT TRUE,
+  ai_completions BOOLEAN DEFAULT TRUE,
+  exports_completed BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
