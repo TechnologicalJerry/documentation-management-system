@@ -1,0 +1,48 @@
+{
+  "name": "@devdocs/user-service",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint src/**/*.ts",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@devdocs/shared-types": "*",
+    "@devdocs/shared-utils": "*",
+    "@devdocs/shared-middleware": "*",
+    "@devdocs/shared-config": "*",
+    "@devdocs/event-bus": "*",
+    "@prisma/client": "^5.12.0",
+    "express": "^4.19.0",
+    "zod": "^3.22.0",
+    "winston": "^3.13.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.2.0",
+    "multer": "^1.4.5-lts.1",
+    "http-status-codes": "^2.3.0",
+    "dotenv": "^16.4.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22.0.0",
+    "@types/uuid": "^9.0.8",
+    "@types/jest": "^29.5.12",
+    "prisma": "^5.12.0",
+    "typescript": "^5.4.0",
+    "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "supertest": "^7.0.0",
+    "@types/supertest": "^6.0.2"
+  }
+}
