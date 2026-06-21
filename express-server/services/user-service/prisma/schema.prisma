@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  firstName      String
+  lastName       String
+  displayName    String?
+  avatar         String?
+  bio            String?
+  timezone       String          @default("UTC")
+  language       String          @default("en")
+  isActive       Boolean         @default(true)
+  organizationId String?
+  organization   Organization?   @relation(fields: [organizationId], references: [id])
+  teamMembers    TeamMember[]
+  preferences    UserPreference?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deletedAt      DateTime?
+
+  @@index([email])
+  @@index([organizationId])
+}
+
+model Organization {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  logo        String?
+  website     String?
+  plan        String    @default("free")
+  maxMembers  Int       @default(5)
+  isActive    Boolean   @default(true)
+  users       User[]
+  teams       Team[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@index([slug])
+}
+
+model Team {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  members        TeamMember[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+}
+
+model TeamMember {
+  id       String   @id @default(uuid())
+  userId   String
+  teamId   String
+  role     String   @default("member")
+  user     User     @relation(fields: [userId], references: [id])
+  team     Team     @relation(fields: [teamId], references: [id])
+  joinedAt DateTime @default(now())
+
+  @@unique([userId, teamId])
+}
+
+model UserPreference {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  emailNotifications Boolean  @default(true)
+  pushNotifications  Boolean  @default(true)
+  theme              String   @default("light")
+  editorFontSize     Int      @default(14)
+  editorTheme        String   @default("default")
+  updatedAt          DateTime @updatedAt
+}
